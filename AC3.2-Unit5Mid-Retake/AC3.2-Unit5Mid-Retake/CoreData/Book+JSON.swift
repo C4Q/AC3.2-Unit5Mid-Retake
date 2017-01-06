@@ -10,12 +10,20 @@ import Foundation
 
 extension Book {
     func populate(with dict: [String:Any]) {
-        if let title = dict["title"] as? String,
-            let author = dict["author"] as? String,
-            let bookDescription = dict["description"] as? String{
-            self.title = title
+        guard let title = dict["title"] as? String else { return }
+        self.title = title
+        
+        if let author = dict["author"] as? String {
             self.author = author
-            self.bookDescription = bookDescription
+        } else {
+            self.author = nil
         }
+        
+        if let bookDescription = dict["description"] as? String {
+            self.bookDescription = bookDescription
+        } else {
+            self.bookDescription = nil
+        }
+        
     }
 }
