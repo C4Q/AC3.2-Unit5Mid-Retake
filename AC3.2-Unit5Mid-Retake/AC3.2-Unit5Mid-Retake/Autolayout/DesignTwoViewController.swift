@@ -200,9 +200,73 @@ class DesignTwoViewController: UIViewController, CellTitled {
             ].map{ $0.map { $0.isActive = true } }
     }
     
+    
+    
+    // MARK: Landscape Constraints
     func configureLandscapeConstraints() {
         
+        // 1. remove the constraints for views that are owned by self.view
+        self.prepareForRotation([
+            topPokeballView,
+            bottomPokeballView,
+            pokeballLineView,
+            pokeballButtonOutterView,
+            pokeballButtonInnerView,
+            pokeballButtonMidView,
+            pikachuImageView,])
+        
+      
+        topPokeballView.removeConstraints(topPokeballView.constraints)
+        
+        let redLabel = [
+            topPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8),
+            topPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8),
+            topPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.3),
+            topPokeballView.bottomAnchor.constraint(equalTo: self.view.topAnchor),
+        ]
+        
+        let blackLabel = [
+            pokeballLineView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8),
+            pokeballLineView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            pokeballLineView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.3),
+        ]
+
+        let whiteLabel = [
+            bottomPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8),
+            bottomPokeballView.leadingAnchor.constraint(equalTo: pokeballLineView.trailingAnchor),
+            bottomPokeballView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            bottomPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.3),
+        ]
+        
+        
+        let _ = [redLabel, blackLabel, whiteLabel].map{ $0.map{ $0.isActive = true } }
     }
+    
+    //The function remove existing constrain when rotate 
+    
+    func prepareForRotation(_ views: [UIView]) {
+        let _ = views.map{ removeParentOwnedConstraints(from: $0) }
+    }
+   
+    func removeParentOwnedConstraints(from view: UIView) {
+        
+        guard let parentView = view.superview else {
+            return
+        }
+        
+        let constraintsOwnedByParentView = parentView.constraints.filter { (constraint) -> Bool in
+            guard let secondItem = constraint.secondItem else { return false }
+            
+            if constraint.firstItem === view || secondItem === view {
+                return true
+            }
+            
+            return false
+        }
+        
+        parentView.removeConstraints(constraintsOwnedByParentView)
+    }
+    
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         

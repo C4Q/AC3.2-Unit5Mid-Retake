@@ -11,10 +11,11 @@ import CoreData
 
 class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResultsControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
     var titleForCell = "Core Data"
+    let identifier = "bookCell"
     
     // Comment #1
     // fix the declaration of fetchedResultsController
-    //var fetchedResultsController: NSFetchedResultsController<Recipe>!
+    var fetchedResultsController: NSFetchedResultsController<Book>!
     
     var mainContext: NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -56,6 +57,11 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
                             // Comment #2
                             // insert your core data objects here
                             
+                            for record in records {
+                                let book = Book(context: context)
+                                book.populate(with: record)
+                            }
+                            
                             do {
                                 try context.save()
                             }
@@ -78,41 +84,65 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        
+        guard fetchedResultsController != nil else {
+            return 0
+        }
+        if let sections = fetchedResultsController.sections {
+            return sections.count
+        }
         return 0
+        
+      
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        
+        if let sections = fetchedResultsController.sections {
+            return sections[section].numberOfObjects
+        }
         return 0
     }
     
-    /*
+    
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? TableViewCell
      
      // Configure the cell...
+        
+        let book = fetchedResultsController.object(at: indexPath)
+        
+        cell?.title.text = book.title
+        cell?.author.text = book.author
      
-     return cell
+     return cell!
      }
-     */
+    
     
     // Comment #3
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
     func initializeFetchedResultsController() {
-        //        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-        //        let sort = NSSortDescriptor(key: "title", ascending: true)
-        //        request.sortDescriptors = [sort]
-        //
-        //        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-        //        fetchedResultsController.delegate = self
-        //
-        //        do {
-        //            try fetchedResultsController.performFetch()
-        //        } catch {
-        //            fatalError("Failed to initialize FetchedResultsController: \(error)")
-        //        }
+                let request: NSFetchRequest<Book> = Book.fetchRequest()
+                let sort = NSSortDescriptor(key: "title", ascending: true)
+                request.sortDescriptors = [sort]
+
+        
+//        if let search = search, search != "" {
+//            let predicate = NSPredicate(format: "ingredients contains[c] %@", search)
+//            request.predicate = predicate
+//        }
+//        
+                fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+                fetchedResultsController.delegate = self
+        
+                do {
+                    try fetchedResultsController.performFetch()
+                } catch {
+                    fatalError("Failed to initialize FetchedResultsController: \(error)")
+                }
     }
     
     // MARK: - Search Bar
