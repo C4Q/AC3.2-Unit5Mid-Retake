@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+//I'm sorry, I'm really at a loss with Core Data, despite attempts to study it. I'll keep trying. Can only add entities and attributes, make swift/nib file and add labels.
 
 class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResultsControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
     var titleForCell = "Core Data"

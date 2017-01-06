@@ -77,7 +77,18 @@ class DesignTwoViewController: UIViewController, CellTitled {
     //    ☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️
     //    DO NOT MODIFY THIS SECTION
     //   ----------------------------------
+    //pokeballLineConstraints:
+    //I know we need to add some restraints and remove others. I'm not sure how to do this.
+    //I tried to start with the vertical line. The leading, trailing, and center would be removed by the rotation/changing of superviews because the view owns those constraints. The height would stay the same constant as before because this constraint is owned by the line view.
+    //Then upon rotation I would add the width (pokeballCenterHalfWidth); this, combined with the height which remained from the portrait view should make the line now vertical in landscape mode.
+    //for the leading edge, I would make it equal to the bottom of the pokeball's trailing edge.
     
+    //For the top/bottom of the pokeball I believe all the views would disappear because they are all owned by the portrait view, so they would have to be added back in landscape mode.
+    //The pokeball's button has constant heights and widths (which will remain constant during rotation as they are owned by their respective button parts), but it's location on the screen is determined by the portrait view's center x and y (i.e., the portrait view owns the location constraints) so those would need to be added back after the rotation turn.
+    
+    //pikachu: I added the pikachu constraints in portrait mode.
+    
+
     
     // You may want to use these to references your constraints...
     var topPokeballConstraints: [NSLayoutConstraint] = []
@@ -95,6 +106,7 @@ class DesignTwoViewController: UIViewController, CellTitled {
         
         setupViewHierarchy()
         configurePortraitConstraints()
+        configureLandscapeConstraints()
     }
     
     func setupViewHierarchy() {
@@ -184,10 +196,8 @@ class DesignTwoViewController: UIViewController, CellTitled {
         
         pikachuImageConstraints = [
             
-            //
-            // FIll in these constraints too!
-            //
-            
+            pikachuImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pikachuImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
         
         let _ = [
@@ -201,6 +211,36 @@ class DesignTwoViewController: UIViewController, CellTitled {
     }
     
     func configureLandscapeConstraints() {
+        let _ = [
+            topPokeballView,
+            bottomPokeballView,
+            pokeballLineView,
+            pokeballButtonOutterView,
+            pokeballButtonInnerView,
+            pokeballButtonMidView,
+            pikachuImageView,
+        ].map { $0.translatesAutoresizingMaskIntoConstraints = false }
+        
+        
+        //pokeball constraints - TOP
+        
+        //pokeball constraints - BOTTOM
+        
+        //pokeballLineConstraints = [
+        //pokeball line constraints
+//            pokeballLineView.addConstraint(NSLayoutConstraint(item: pokeballLineView, attribute: .height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1),
+//            pokeballLineView.addConstraint(NSLayoutConstraint(item: pokeballLineView, attribute: .width, relatedBy: .Equal, toItem: pokeballOpenHalfWidth, attribute: .NotAnAttribute, multiplier: 1),
+//            pokeballLineView.addConstraint(NSLayoutConstraint(item: pokeballLineView, attribute: .top, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1),
+//                                           
+//            pokeballLineView.heightAnchor.constraint(equalToConstant: pokeballLineHeight),
+//            pokeballLineView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+//            pokeballLineView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//            pokeballLineView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+//        ]
+
+        
+        //pikachu constraints
+        //pikachuImage
         
     }
     
