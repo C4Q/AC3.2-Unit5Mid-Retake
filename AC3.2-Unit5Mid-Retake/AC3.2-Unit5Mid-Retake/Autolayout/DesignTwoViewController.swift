@@ -75,15 +75,16 @@ class DesignTwoViewController: UIViewController, CellTitled {
     return view
   }()
   
-  internal lazy var pokeballBackgroundView: UIView = {
-    let view: UIView = UIView()
-    view.backgroundColor = self.pokeballGray
-    return view
-  }()
-  
   //    ☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️☝️
   //    DO NOT MODIFY THIS SECTION
   //   ----------------------------------
+  
+  var topPokeballConstraints: [NSLayoutConstraint] = []
+  var bottomPokeballConstraints: [NSLayoutConstraint] = []
+  var pokeballLineConstraints: [NSLayoutConstraint] = []
+  var pokeballButtonConstraints: [NSLayoutConstraint] = []
+  var pokeballButtonSizeConstraints: [NSLayoutConstraint] = []
+  var pikachuImageConstraints: [NSLayoutConstraint] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -95,6 +96,7 @@ class DesignTwoViewController: UIViewController, CellTitled {
   }
   
   func setupViewHierarchy() {
+    self.view.addSubview(pikachuImageView)
     self.view.addSubview(topPokeballView)
     self.view.addSubview(bottomPokeballView)
     
@@ -105,6 +107,10 @@ class DesignTwoViewController: UIViewController, CellTitled {
     self.view.addSubview(pokeballButtonInnerView)
     
     self.edgesForExtendedLayout = []
+    
+    pokeballButtonOutterView.layer.cornerRadius = pokeballButtonOutterSize.width / 2.0
+    pokeballButtonInnerView.layer.cornerRadius = pokeballButtonInnerSize.width / 2.0
+    pokeballButtonMidView.layer.cornerRadius = pokeballButtonMidSize.width / 2.0
   }
   
   func configurePortraitConstraints() {
@@ -115,56 +121,123 @@ class DesignTwoViewController: UIViewController, CellTitled {
       pokeballButtonOutterView,
       pokeballButtonInnerView,
       pokeballButtonMidView,
+      pikachuImageView,
       
       ].map { $0.translatesAutoresizingMaskIntoConstraints = false }
     
+    self.view.removeConstraints(self.view.constraints)
+    topPokeballView.removeConstraints(topPokeballView.constraints)
+    bottomPokeballView.removeConstraints(bottomPokeballView.constraints)
+    pokeballLineView.removeConstraints(pokeballLineView.constraints)
     
-    let _ = [
+    topPokeballConstraints = [
       // top view
       topPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
       topPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0),
       topPokeballView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0),
       topPokeballView.bottomAnchor.constraint(equalTo: self.view.centerYAnchor),
-      
+    ]
+    
+    bottomPokeballConstraints = [
       // bottom view
       bottomPokeballView.topAnchor.constraint(equalTo: self.view.centerYAnchor),
       bottomPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0),
       bottomPokeballView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0),
       bottomPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
-      
+    ]
+    
+    pokeballLineConstraints = [
       // center line
       pokeballLineView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
       pokeballLineView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
       pokeballLineView.heightAnchor.constraint(equalToConstant: pokeballLineHeight),
       pokeballLineView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+    ]
+    
+    pokeballButtonConstraints = [
+      pokeballButtonOutterView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+      pokeballButtonOutterView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
       
+      pokeballButtonMidView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
+      pokeballButtonMidView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
+      
+      pokeballButtonInnerView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
+      pokeballButtonInnerView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
+    ]
+    
+    pokeballButtonSizeConstraints = [
       // Middle Button
       // outer
       pokeballButtonOutterView.widthAnchor.constraint(equalToConstant: pokeballButtonOutterSize.width),
       pokeballButtonOutterView.heightAnchor.constraint(equalToConstant: pokeballButtonOutterSize.height),
-      pokeballButtonOutterView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-      pokeballButtonOutterView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
       
       // middle
       pokeballButtonMidView.widthAnchor.constraint(equalToConstant: pokeballButtonMidSize.width),
       pokeballButtonMidView.heightAnchor.constraint(equalToConstant: pokeballButtonMidSize.height),
-      pokeballButtonMidView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
-      pokeballButtonMidView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
       
       // inner
       pokeballButtonInnerView.widthAnchor.constraint(equalToConstant: pokeballButtonInnerSize.width),
       pokeballButtonInnerView.heightAnchor.constraint(equalToConstant: pokeballButtonInnerSize.height),
-      pokeballButtonInnerView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
-      pokeballButtonInnerView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
-      ].map{ $0.isActive = true }
+      ]
+    
+    pikachuImageConstraints = [
+      pikachuImageView.widthAnchor.constraint(equalToConstant: pikachuDimensions.width),
+      pikachuImageView.heightAnchor.constraint(equalToConstant: pikachuDimensions.height),
+      pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+      pikachuImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+    ]
+    
+    let _ = [topPokeballConstraints, bottomPokeballConstraints, pokeballLineConstraints, pokeballButtonConstraints, pokeballButtonSizeConstraints, pikachuImageConstraints].map{ $0.map { $0.isActive = true } }
   }
   
   func configureLandscapeConstraints() {
     
+    self.view.removeConstraints(self.view.constraints)
+    
+    topPokeballConstraints = [
+      topPokeballView.widthAnchor.constraint(equalToConstant: pokeballOpenHalfWidth),
+      topPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0),
+      topPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
+      topPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
+    ]
+
+    bottomPokeballConstraints = [
+      bottomPokeballView.widthAnchor.constraint(equalToConstant: pokeballOpenHalfWidth),
+      bottomPokeballView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0),
+      bottomPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
+      bottomPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
+    ]
+    
+    pokeballLineView.removeConstraints(pokeballLineView.constraints)
+    pokeballLineConstraints = [
+      pokeballLineView.widthAnchor.constraint(equalToConstant: pokeballLineHeight),
+      pokeballLineView.centerXAnchor.constraint(equalTo: bottomPokeballView.leadingAnchor),
+      pokeballLineView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      pokeballLineView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+    ]
+    
+    pokeballButtonConstraints = [
+      pokeballButtonOutterView.centerYAnchor.constraint(equalTo: bottomPokeballView.centerYAnchor),
+      pokeballButtonOutterView.centerXAnchor.constraint(equalTo: bottomPokeballView.leadingAnchor),
+      
+      pokeballButtonMidView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
+      pokeballButtonMidView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
+      
+      pokeballButtonInnerView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
+      pokeballButtonInnerView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
+    ]
+    
+    let _ = [topPokeballConstraints, bottomPokeballConstraints, pokeballLineConstraints, pokeballButtonConstraints, pikachuImageConstraints].map{ $0.map { $0.isActive = true } }
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
     
+    if newCollection.verticalSizeClass == .compact {
+      self.configureLandscapeConstraints()
+    }
+    else {
+      self.configurePortraitConstraints()
+    }
   }
   
   
