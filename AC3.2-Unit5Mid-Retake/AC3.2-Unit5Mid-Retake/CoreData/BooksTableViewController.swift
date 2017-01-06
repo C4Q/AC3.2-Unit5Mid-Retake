@@ -11,6 +11,7 @@ import CoreData
 
 class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResultsControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
     var titleForCell = "Core Data"
+    var userInputTextField: String?
     
     // Comment #1
     // fix the declaration of fetchedResultsController
@@ -28,8 +29,11 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         
         self.tableView.register(UINib(nibName: "BookTableViewCell", bundle: nil), forCellReuseIdentifier: "BookCell")
         
-        getData()
+        
+        
         initializeFetchedResultsController()
+        getData()
+        
         
         tableView.estimatedRowHeight = 200
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -40,11 +44,13 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
         self.navigationItem.titleView = textField
+        textField.placeholder = "Add Author"
         textField.delegate = self
         
         // this should filter the results from core data without any network call
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
         self.tableView.tableHeaderView = searchBar
+        searchBar.placeholder = "Filter Authors"
         searchBar.delegate = self
     }
     
@@ -109,9 +115,9 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
      
         let book = fetchedResultsController.object(at: indexPath)
         
-        cell.titleLabel.text = book.title ?? "NIL"
-        cell.authorLabel.text = book.author ?? "NIL"
-        cell.descriptionLabel.text = book.abstract ?? "NIL"
+        cell.titleLabel.text = book.title ?? ""
+        cell.authorLabel.text = book.author ?? ""
+        cell.descriptionLabel.text = book.abstract ?? ""
         
      return cell
      }
@@ -125,33 +131,39 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
-    func initializeFetchedResultsController() {
-                let request: NSFetchRequest<Book> = Book.fetchRequest()
-                let sort = NSSortDescriptor(key: "title", ascending: true)
-                request.sortDescriptors = [sort]
-                let nonNilTitlePredicate = NSPredicate(format: "title != nil")
-                request.predicate = nonNilTitlePredicate
+    func initializeFetchedResultsController(searchString: String? = nil) {
+        let request: NSFetchRequest<Book> = Book.fetchRequest()
+        let sort = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sort]
+        let nonNilTitlePredicate = NSPredicate(format: "title != nil")
+        request.predicate = nonNilTitlePredicate
         
-                fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-                fetchedResultsController.delegate = self
+        if let search = searchString {
+            let predicate = NSPredicate(format: "author contains[c] %@", search) //search is the argument that will substitute for %@
+            request.predicate = predicate
+        }
         
-                do {
-                    try fetchedResultsController.performFetch()
-                } catch {
-                    fatalError("Failed to initialize FetchedResultsController: \(error)")
-                }
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to initialize FetchedResultsController: \(error)")
+        }
     }
     
     // MARK: - Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Comment #4
-        self.initializeFetchedResultsController(/* you will need to re-init this with search/filter text*/)
+        self.initializeFetchedResultsController(searchString: searchText)
         self.tableView.reloadData()
     }
     
     // MARK: - Text Field
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let search = textField.text {
+            self.userInputTextField = search
             self.getData(search: search)
             self.tableView.reloadData()
         }
@@ -159,6 +171,7 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let search = textField.text {
+            self.userInputTextField = search
             self.getData(search: search)
             self.tableView.reloadData()
         }
