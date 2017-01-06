@@ -14,7 +14,7 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     // Comment #1
     // fix the declaration of fetchedResultsController
-    //var fetchedResultsController: NSFetchedResultsController<Recipe>!
+    var fetchedResultsController: NSFetchedResultsController<Book>!
     
     var mainContext: NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -25,6 +25,15 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         super.viewDidLoad()
         
         self.title = titleForCell
+        
+        self.tableView.register(UINib(nibName:"BooksTableViewCell", bundle: nil), forCellReuseIdentifier: BooksTableViewCell.CellIdentifier)
+        tableView.estimatedRowHeight = 300
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        /// First initial load:
+        //getData()
+        /// Fetching core data results:
+        initializeFetchedResultsController()
         
         // entering text in the textField in the Navigation Bar collects more recipe results
         // and should insert them into Core Data
@@ -55,6 +64,10 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
                             
                             // Comment #2
                             // insert your core data objects here
+                            for record in records {
+                                let book = NSEntityDescription.insertNewObject(forEntityName: "Book", into: context) as! Book
+                                book.populate(from: record)
+                            }
                             
                             do {
                                 try context.save()
@@ -64,7 +77,7 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
                             }
                             
                             DispatchQueue.main.async {
-                                self.initializeFetchedResultsController()
+                                self.initializeFetchedResultsController(query: search)
                                 self.tableView.reloadData()
                             }
                         }
@@ -77,42 +90,61 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        guard fetchedResultsController != nil else {
+            return 0
+        }
+        if let sections = fetchedResultsController.sections {
+            return sections.count
+        }
         return 0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        guard let sections = fetchedResultsController.sections else{
+            return 0
+        }
+        return sections[section].numberOfObjects
     }
     
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-     
-     // Configure the cell...
-     
-     return cell
-     }
-     */
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "bookCell", for: indexPath) as! BooksTableViewCell
+        
+        let object = fetchedResultsController.object(at: indexPath)
+        
+        cell.titleLabel?.text = object.title
+        cell.authorLabel?.text = object.author
+        if object.describ != nil {
+            cell.descriptionLabel?.text = object.describ
+        } else {
+            cell.descriptionLabel.text = "No description for this book"
+        }
+        cell.setNeedsLayout()
+        
+        return cell
+    }
     
     // Comment #3
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
-    func initializeFetchedResultsController() {
-        //        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-        //        let sort = NSSortDescriptor(key: "title", ascending: true)
-        //        request.sortDescriptors = [sort]
-        //
-        //        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-        //        fetchedResultsController.delegate = self
-        //
-        //        do {
-        //            try fetchedResultsController.performFetch()
-        //        } catch {
-        //            fatalError("Failed to initialize FetchedResultsController: \(error)")
-        //        }
+    func initializeFetchedResultsController(query: String? = nil) {
+        let request: NSFetchRequest<Book> = Book.fetchRequest()
+        let sort = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sort]
+        
+        if let predicateFilter = query {
+            let predicate = NSPredicate(format: "title contains[c] %@", predicateFilter)
+            request.predicate = predicate
+        }
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: "title", cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to initialize FetchedResultsController: \(error)")
+        }
     }
     
     // MARK: - Search Bar
