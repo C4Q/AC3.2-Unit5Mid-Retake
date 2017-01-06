@@ -306,19 +306,8 @@ class DesignTwoViewController: UIViewController, CellTitled {
             self.view.removeConstraints(pokeballButtonConstraints)
             self.view.removeConstraints(pokeballButtonSizeConstraints)
             
-            /*
-             You may want to use these to references your constraints...
-             var topPokeballConstraints: [NSLayoutConstraint] = []
-             var bottomPokeballConstraints: [NSLayoutConstraint] = []
-             var pokeballLineConstraints: [NSLayoutConstraint] = []
-             var pokeballButtonConstraints: [NSLayoutConstraint] = []
-             var pokeballButtonSizeConstraints: [NSLayoutConstraint] = []
-             var pikachuImageConstraints: [NSLayoutConstraint] = []
-             
-             
-             */
             self.configureLandscapeConstraints()
-            print("Landscape")
+            
         }
         else {
             self.view.removeConstraints(topPokeballConstraints)
@@ -327,8 +316,9 @@ class DesignTwoViewController: UIViewController, CellTitled {
             self.view.removeConstraints(pokeballButtonConstraints)
             self.view.removeConstraints(pokeballButtonSizeConstraints)
             self.view.removeConstraints(pikachuImageConstraints)
+            
             self.configurePortraitConstraints()
-            print("Portrait")
+            
         }
     }
     
