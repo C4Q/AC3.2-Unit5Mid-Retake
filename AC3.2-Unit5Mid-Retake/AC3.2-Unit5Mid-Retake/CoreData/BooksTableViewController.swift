@@ -14,8 +14,9 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     // Comment #1
     // fix the declaration of fetchedResultsController
-    //var fetchedResultsController: NSFetchedResultsController<Recipe>!
-    
+    var fetchedResultsController: NSFetchedResultsController<Book>!
+    var searchText: String?
+    let reuseIdentifier = "bookCellIdentifier"
     var mainContext: NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
@@ -25,6 +26,15 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         super.viewDidLoad()
         
         self.title = titleForCell
+        
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        self.tableView.register(UINib(nibName:"BooksTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+        
+        tableView.estimatedRowHeight = 85.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        getData()
+        initializeFetchedResultsController()
         
         // entering text in the textField in the Navigation Bar collects more recipe results
         // and should insert them into Core Data
@@ -54,7 +64,10 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
                             context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
                             
                             // Comment #2
-                            // insert your core data objects here
+                            for record in records {
+                                let book = NSEntityDescription.insertNewObject(forEntityName: "Book", into: context) as! Book
+                                book.populate(from: record)
+                            }
                             
                             do {
                                 try context.save()
@@ -77,49 +90,77 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        
+        guard let sections = fetchedResultsController.sections else {
+            print("No sections in fetchedResultsController")
+            return 0
+        }
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        
+        guard let sections = fetchedResultsController.sections else {
+            return 0
+        }
+        let sectionInfo = sections[section]
+        return sectionInfo.numberOfObjects
     }
     
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-     
-     // Configure the cell...
-     
-     return cell
-     }
-     */
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! BooksTableViewCell
+        
+        let book = fetchedResultsController.object(at: indexPath)
+        
+        cell.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        cell.titleLabel.text = book.title
+        cell.authorNameLabel.text = book.author
+        if book.bookDescription != nil {
+            cell.descriptionLabel.text = book.bookDescription
+        }
+        else {
+            
+            cell.descriptionLabel.text = "No description available"
+        }
+        
+        return cell
+    }
+    
     
     // Comment #3
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
     func initializeFetchedResultsController() {
-        //        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-        //        let sort = NSSortDescriptor(key: "title", ascending: true)
-        //        request.sortDescriptors = [sort]
-        //
-        //        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-        //        fetchedResultsController.delegate = self
-        //
-        //        do {
-        //            try fetchedResultsController.performFetch()
-        //        } catch {
-        //            fatalError("Failed to initialize FetchedResultsController: \(error)")
-        //        }
+        let request: NSFetchRequest<Book> = Book.fetchRequest()
+        let sort = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sort]
+        
+        if let search = self.searchText, search != "" {
+            let predicate = NSPredicate(format: "title CONTAINS[c] %@", search)
+            request.predicate = predicate
+        }
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: "title", cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to initialize FetchedResultsController: \(error)")
+        }
     }
     
     // MARK: - Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Comment #4
-        self.initializeFetchedResultsController(/* you will need to re-init this with search/filter text*/)
-        self.tableView.reloadData()
+        if let search = searchBar.text {
+            self.searchText = search
+            self.initializeFetchedResultsController()
+            self.tableView.reloadData()
+        }
+        
     }
     
     // MARK: - Text Field
