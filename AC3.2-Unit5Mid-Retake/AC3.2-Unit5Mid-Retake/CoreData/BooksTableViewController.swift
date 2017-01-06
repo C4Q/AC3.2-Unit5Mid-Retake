@@ -33,9 +33,7 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         self.title = titleForCell
         
         // we observed how estimatedRowHeight alone was enough to trigger automatic cell heights
-        tableView.estimatedRowHeight = 100
-        // but we should set this property too
-        tableView.rowHeight = UITableViewAutomaticDimension
+      
         
         tableView.register(UINib(nibName: "BookTableViewCell", bundle:nil), forCellReuseIdentifier: identifier)
         
