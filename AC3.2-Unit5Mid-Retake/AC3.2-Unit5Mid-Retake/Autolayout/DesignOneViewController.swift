@@ -44,19 +44,33 @@ class DesignOneViewController: UIViewController, CellTitled {
     }
     
     func configureConstraints() {
-        // set constraints
+        blackView.translatesAutoresizingMaskIntoConstraints = false
+
+        blackView.topAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        blackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        blackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
+        blackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
         
     }
     
     func setupViewHierarchy() {
-        // Add views
-        
+        view.addSubview(blackView)
+        view.addSubview(labelPichu)
+        view.addSubview(labelPikachu)
+        view.addSubview(labelRaichu)
+
+        blackView.backgroundColor = UIColor.black
+
     }
     
     
     // MARK: - Define Your Views Here
-    
-    // ex:
-    // let pikachuImageView: UIView = ... your code here ...
+    let blackView = UIView()
+    let pikachu = #imageLiteral(resourceName: "pikachu")
+    let pichu = #imageLiteral(resourceName: "pichu")
+    let raichu = #imageLiteral(resourceName: "raichu")
+    let labelPichu = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+    let labelPikachu = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
+    let labelRaichu = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 21))
     
 }
