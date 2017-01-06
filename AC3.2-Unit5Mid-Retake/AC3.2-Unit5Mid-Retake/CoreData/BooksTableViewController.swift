@@ -127,7 +127,6 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         return cell
     }
     
-    
     // Comment #3
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization

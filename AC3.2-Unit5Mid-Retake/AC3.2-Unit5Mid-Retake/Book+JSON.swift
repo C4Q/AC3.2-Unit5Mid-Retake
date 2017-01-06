@@ -11,7 +11,6 @@ import Foundation
 extension Book {
     
     func populate(from dict: [String:Any]) {
-        
         if let title = dict["title"] as? String,
             let author = dict["author"] as? String {
                 let bookDescription = nullToNil(value: dict["description"])
@@ -19,7 +18,6 @@ extension Book {
                 self.bookDescription = bookDescription
                 self.author = author
         }
-        
     }
     
 }
