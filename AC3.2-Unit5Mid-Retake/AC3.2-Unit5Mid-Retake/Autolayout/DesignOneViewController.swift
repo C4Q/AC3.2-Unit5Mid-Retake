@@ -33,6 +33,31 @@ class DesignOneViewController: UIViewController, CellTitled {
     //    DO NOT MODIFY THIS SECTION
     //   ----------------------------------
     
+    lazy var bigPickachuImage: UIImageView = {
+        let pI = UIImageView()
+        pI.image = UIImage(named: "pikachu")
+        
+        return pI
+    }()
+    
+    lazy var pichuImage: UIImageView = {
+        let pI = UIImageView()
+        pI.image = UIImage(named: "pichu")
+        return pI
+    }()
+    
+    lazy var raichuImage: UIImageView = {
+        let pI = UIImageView()
+        pI.image = UIImage(named: "raichu")
+        return pI
+    }()
+    
+    lazy var bottomImage: UIImageView = {
+        let pI = UIImageView()
+        pI.image = UIImage(named: "pikachu_evolution")
+        return pI
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,15 +68,31 @@ class DesignOneViewController: UIViewController, CellTitled {
         configureConstraints()
     }
     
+    func setupViewHierarchy() {
+        self.view.addSubview(bigPickachuImage)
+        self.view.addSubview(pichuImage)
+        self.view.addSubview(raichuImage)
+        self.view.addSubview(bottomImage)
+
+        
+    }
+
     func configureConstraints() {
-        // set constraints
+        let _ = [
+            bigPickachuImage,
+            pichuImage,
+            raichuImage,
+            bottomImage
+            ].map{ $0.translatesAutoresizingMaskIntoConstraints = false }
+        
+        let _ = [
+            bigPickachuImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            
+        
+        ]
         
     }
     
-    func setupViewHierarchy() {
-        // Add views
-        
-    }
     
     
     // MARK: - Define Your Views Here
