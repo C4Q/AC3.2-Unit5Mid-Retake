@@ -11,10 +11,10 @@ import CoreData
 
 class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResultsControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
     var titleForCell = "Core Data"
-    
+    var identifier = "bookCell"
     // Comment #1
     // fix the declaration of fetchedResultsController
-    //var fetchedResultsController: NSFetchedResultsController<Recipe>!
+    var fetchedResultsController: NSFetchedResultsController<Book>!
     
     var mainContext: NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -23,24 +23,25 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(UINib(nibName: "BookTableViewCell", bundle: nil), forCellReuseIdentifier: identifier)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 200
         
         self.title = titleForCell
         
-        // entering text in the textField in the Navigation Bar collects more recipe results
-        // and should insert them into Core Data
         let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
         self.navigationItem.titleView = textField
         textField.delegate = self
         
+        initializeFetchedResultsController()
         // this should filter the results from core data without any network call
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
         self.tableView.tableHeaderView = searchBar
         searchBar.delegate = self
     }
     
-    // get http://www.recipepuppy.com/api/?q=cookies by default
     func getData(search: String = "murakami") {
         APIRequestManager.manager.getData(endPoint: "https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=e2be2d080327411c84fc55e44e036425&author=\(search)")  { (data: Data?) in
             if let validData = data {
@@ -55,6 +56,11 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
                             
                             // Comment #2
                             // insert your core data objects here
+                            for books in records {
+                                let bookInfo = NSEntityDescription.insertNewObject(forEntityName: "Book", into: context) as! Book
+                                bookInfo.populate(from: books)
+                            }
+
                             
                             do {
                                 try context.save()
@@ -77,48 +83,66 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        guard let sections = fetchedResultsController.sections else {
+            print("No sections in fetchedResultsController")
+            return 0
+        }
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        guard let sections = fetchedResultsController.sections else {
+            fatalError("NO SECTIONS IN FETCHEDRESULTSCONTROLLER")
+        }
+        let sectionInfo = sections[section]
+        
+        return sectionInfo.numberOfObjects
     }
     
-    /*
+    
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+     let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! BookTableViewCell
+        
+    let book = fetchedResultsController.object(at: indexPath)
      
+        cell.titleLabel.text = book.title
+        cell.authorLabel.text = book.author
+        cell.descriptionLabel.text = book.bookDescription
+        
      // Configure the cell...
      
      return cell
      }
-     */
+    
     
     // Comment #3
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
-    func initializeFetchedResultsController() {
-        //        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-        //        let sort = NSSortDescriptor(key: "title", ascending: true)
-        //        request.sortDescriptors = [sort]
-        //
-        //        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-        //        fetchedResultsController.delegate = self
-        //
-        //        do {
-        //            try fetchedResultsController.performFetch()
-        //        } catch {
-        //            fatalError("Failed to initialize FetchedResultsController: \(error)")
-        //        }
+    func initializeFetchedResultsController(filter: String? = nil) {
+        let request: NSFetchRequest<Book> = Book.fetchRequest()
+        let sort = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sort]
+        
+        if let filter = filter, filter != ""{
+            let predicate: NSPredicate = NSPredicate(format: "title CONTAINS[c] %@", filter)
+            request.predicate = predicate
+        }
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: "title", cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to initialize FetchedResultsController: \(error)")
+        }
     }
     
     // MARK: - Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Comment #4
-        self.initializeFetchedResultsController(/* you will need to re-init this with search/filter text*/)
+        self.initializeFetchedResultsController(filter: searchText)
         self.tableView.reloadData()
     }
     
