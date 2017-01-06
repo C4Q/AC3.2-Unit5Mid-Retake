@@ -14,7 +14,7 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     // Comment #1
     // fix the declaration of fetchedResultsController
-    //var fetchedResultsController: NSFetchedResultsController<Recipe>!
+    var fetchedResultsController: NSFetchedResultsController<Book>!
     
     var mainContext: NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -25,6 +25,14 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         super.viewDidLoad()
         
         self.title = titleForCell
+        
+        self.tableView.register(UINib(nibName: "BookTableViewCell", bundle: nil), forCellReuseIdentifier: "BookCell")
+        
+        getData()
+        initializeFetchedResultsController()
+        
+        tableView.estimatedRowHeight = 200
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         // entering text in the textField in the Navigation Bar collects more recipe results
         // and should insert them into Core Data
@@ -40,13 +48,12 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
         searchBar.delegate = self
     }
     
-    // get http://www.recipepuppy.com/api/?q=cookies by default
     func getData(search: String = "murakami") {
         APIRequestManager.manager.getData(endPoint: "https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=e2be2d080327411c84fc55e44e036425&author=\(search)")  { (data: Data?) in
             if let validData = data {
                 if let jsonData = try? JSONSerialization.jsonObject(with: validData, options:[]) {
                     if let wholeDict = jsonData as? [String:Any],
-                        let records = wholeDict["results"] as? [[String:Any]] {
+                        let books = wholeDict["results"] as? [[String:Any]] {
                         
                         let appDelegate = UIApplication.shared.delegate as! AppDelegate
                         let pc = appDelegate.persistentContainer
@@ -55,6 +62,10 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
                             
                             // Comment #2
                             // insert your core data objects here
+                            books.forEach{ (bookRecord) in
+                                let book = Book(context: context)
+                                book.populate(from: bookRecord)
+                            }
                             
                             do {
                                 try context.save()
@@ -78,41 +89,57 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        if let sections = fetchedResultsController.sections {
+            return sections.count
+        }
         return 0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if let sections = fetchedResultsController.sections {
+            return sections[section].numberOfObjects
+        }
         return 0
     }
     
-    /*
+    
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+     let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! BookTableViewCell
      
-     // Configure the cell...
-     
+        let book = fetchedResultsController.object(at: indexPath)
+        
+        cell.titleLabel.text = book.title ?? "NIL"
+        cell.authorLabel.text = book.author ?? "NIL"
+        cell.descriptionLabel.text = book.abstract ?? "NIL"
+        
      return cell
      }
-     */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let book = fetchedResultsController.object(at: indexPath)
+        print(book.abstract)
+    }
     
     // Comment #3
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
     func initializeFetchedResultsController() {
-        //        let request: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-        //        let sort = NSSortDescriptor(key: "title", ascending: true)
-        //        request.sortDescriptors = [sort]
-        //
-        //        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
-        //        fetchedResultsController.delegate = self
-        //
-        //        do {
-        //            try fetchedResultsController.performFetch()
-        //        } catch {
-        //            fatalError("Failed to initialize FetchedResultsController: \(error)")
-        //        }
+                let request: NSFetchRequest<Book> = Book.fetchRequest()
+                let sort = NSSortDescriptor(key: "title", ascending: true)
+                request.sortDescriptors = [sort]
+                let nonNilTitlePredicate = NSPredicate(format: "title != nil")
+                request.predicate = nonNilTitlePredicate
+        
+                fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
+                fetchedResultsController.delegate = self
+        
+                do {
+                    try fetchedResultsController.performFetch()
+                } catch {
+                    fatalError("Failed to initialize FetchedResultsController: \(error)")
+                }
     }
     
     // MARK: - Search Bar
