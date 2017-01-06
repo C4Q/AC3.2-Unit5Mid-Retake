@@ -204,10 +204,6 @@ class DesignTwoViewController: UIViewController, CellTitled {
         pikachuImageConstraints = [
             pikachuImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            //
-            // FIll in these constraints too!
-            //
-            
         ]
         
         let _ = [
@@ -221,16 +217,16 @@ class DesignTwoViewController: UIViewController, CellTitled {
     }
     
     func configureLandscapeConstraints() {
-
+        
         _ = [
-        pikachuImageView,
-        topPokeballView,
-        bottomPokeballView,
-        pokeballLineView,
-        pokeballButtonOutterView,
-        pokeballButtonMidView,
-        pokeballButtonInnerView
-        ].map { $0.removeFromSuperview() }
+            pikachuImageView,
+            topPokeballView,
+            bottomPokeballView,
+            pokeballLineView,
+            pokeballButtonOutterView,
+            pokeballButtonMidView,
+            pokeballButtonInnerView
+            ].map { $0.removeFromSuperview() }
         
         _ = [
             pikachuImageView,
@@ -241,9 +237,9 @@ class DesignTwoViewController: UIViewController, CellTitled {
             pokeballButtonMidView,
             pokeballButtonInnerView
             ].map { self.view.addSubview($0) }
-
         
-
+        
+        
         _ = [
             pikachuImageView,
             topPokeballView,
@@ -261,22 +257,19 @@ class DesignTwoViewController: UIViewController, CellTitled {
         pokeballLineView.removeConstraints(pokeballLineView.constraints)
         pokeballButtonOutterView.removeConstraints(pokeballButtonOutterView.constraints)
         
-        
         //Add landscape constraints
         
         _ = [
             pikachuImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            ].map { $0.isActive = true }
-        
-        _ = [
+            pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            
             //red view
             topPokeballView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
             topPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.33),
             topPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0),
             topPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
             topPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
-           
+            
             
             //white view
             bottomPokeballView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
@@ -304,15 +297,7 @@ class DesignTwoViewController: UIViewController, CellTitled {
             pokeballButtonInnerView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
             pokeballButtonInnerView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor)
             ].map { $0.isActive = true }
-        
-        
-        
-        
-        
-        
     }
-    
-    
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         
@@ -322,6 +307,4 @@ class DesignTwoViewController: UIViewController, CellTitled {
             self.configurePortraitConstraints()
         }
     }
-    
-    
 }
