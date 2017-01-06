@@ -184,10 +184,8 @@ class DesignTwoViewController: UIViewController, CellTitled {
         
         pikachuImageConstraints = [
             
-            //
-            // FIll in these constraints too!
-            //
-            
+            pikachuImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pikachuImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
         
         let _ = [
@@ -201,6 +199,12 @@ class DesignTwoViewController: UIViewController, CellTitled {
     }
     
     func configureLandscapeConstraints() {
+        //pokeball constraints - TOP
+        
+        //pokeball constraints - BOTTOM
+        
+        //pikachu constraints
+        //pikachuImage
         
     }
     
