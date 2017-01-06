@@ -203,7 +203,9 @@ class DesignTwoViewController: UIViewController, CellTitled {
         
         pikachuImageConstraints = [
             pikachuImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+            pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            pikachuImageView.widthAnchor.constraint(equalToConstant: self.pikachuDimensions.width),
+            pikachuImageView.heightAnchor.constraint(equalToConstant: self.pikachuDimensions.height),
         ]
         
         let _ = [
@@ -262,6 +264,8 @@ class DesignTwoViewController: UIViewController, CellTitled {
         _ = [
             pikachuImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             pikachuImageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            pikachuImageView.widthAnchor.constraint(equalToConstant: self.pikachuDimensions.width),
+            pikachuImageView.heightAnchor.constraint(equalToConstant: self.pikachuDimensions.height),
             
             //red view
             topPokeballView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
