@@ -95,6 +95,7 @@ class DesignTwoViewController: UIViewController, CellTitled {
         
         setupViewHierarchy()
         configurePortraitConstraints()
+        configureLandscapeConstraints()
     }
     
     func setupViewHierarchy() {
@@ -199,9 +200,37 @@ class DesignTwoViewController: UIViewController, CellTitled {
     }
     
     func configureLandscapeConstraints() {
+        let _ = [
+            topPokeballView,
+            bottomPokeballView,
+            pokeballLineView,
+            pokeballButtonOutterView,
+            pokeballButtonInnerView,
+            pokeballButtonMidView,
+            pikachuImageView,
+        ].map { $0.translatesAutoresizingMaskIntoConstraints = false }
+        
         //pokeball constraints - TOP
         
         //pokeball constraints - BOTTOM
+        
+        pokeballLineConstraints = [
+        //pokeball line constraints
+            pokeballLineView.addConstraint(NSLayoutConstraint(item: pokeballLineView, attribute: .height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1),
+            pokeballLineView.addConstraint(NSLayoutConstraint(item: pokeballLineView, attribute: .width, relatedBy: .Equal, toItem: pokeballOpenHalfWidth, attribute: .NotAnAttribute, multiplier: 1),
+                                           
+        pokeballLineView.heightAnchor.constraint(equalToConstant: pokeballLineHeight),
+        pokeballLineView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+        pokeballLineView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+        pokeballLineView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+        ]
+        
+//        closeButton.addConstraint(NSLayoutConstraint(item: closeButton, attribute: .Width,
+//                                                     relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 44))
+//        
+//        closeButton.addConstraint(NSLayoutConstraint(item: closeButton, attribute: .Height,
+//                                                     relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 44))
+        
         
         //pikachu constraints
         //pikachuImage
