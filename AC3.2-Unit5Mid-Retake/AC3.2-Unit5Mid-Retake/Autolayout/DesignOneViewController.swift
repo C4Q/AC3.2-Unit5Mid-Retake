@@ -81,10 +81,11 @@ class DesignOneViewController: UIViewController, CellTitled {
             scrollView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -standardMargin),
             scrollView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -standardMargin),
             
-            bannerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            bannerView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: standardMargin),
+            bannerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -standardMargin),
+            
             bannerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             bannerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            bannerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             bannerView.heightAnchor.constraint(equalToConstant: bannerScrollingImageSize.height),
             bannerView.widthAnchor.constraint(equalToConstant: bannerScrollingImageSize.width),
             ].map { $0.isActive = true }
