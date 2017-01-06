@@ -183,10 +183,8 @@ class DesignTwoViewController: UIViewController, CellTitled {
         ]
         
         pikachuImageConstraints = [
-            
-            //
-            // FIll in these constraints too!
-            //
+            pikachuImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pikachuImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             
         ]
         
@@ -198,15 +196,77 @@ class DesignTwoViewController: UIViewController, CellTitled {
             pokeballButtonSizeConstraints,
             pikachuImageConstraints
             ].map{ $0.map { $0.isActive = true } }
+        
+        //weird transition effect if hidden
+        //pikachuImageView.isHidden = true
     }
     
     func configureLandscapeConstraints() {
+    
+        topPokeballConstraints = [
+            // top view
+            topPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
+            topPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0),
+            topPokeballView.trailingAnchor.constraint(equalTo: self.pokeballLineView.leadingAnchor, constant: -8.0),
+            topPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
+            topPokeballView.widthAnchor.constraint(equalToConstant: pokeballOpenHalfWidth)
+        ]
         
+        bottomPokeballConstraints = [
+            // bottom view
+            bottomPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
+            bottomPokeballView.leadingAnchor.constraint(equalTo: self.pokeballLineView.trailingAnchor, constant: 8.0),
+            bottomPokeballView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0),
+            bottomPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
+            bottomPokeballView.widthAnchor.constraint(equalToConstant: pokeballOpenHalfWidth)
+        ]
+        
+        pokeballLineConstraints = [
+            // center line
+            pokeballLineView.leadingAnchor.constraint(equalTo: self.topPokeballView.trailingAnchor),
+            pokeballLineView.trailingAnchor.constraint(equalTo: self.bottomPokeballView.leadingAnchor),
+            //pokeballLineView.widthAnchor.constraint(equalToConstant: pokeballOpenHalfWidth multiplier:),
+            pokeballLineView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+        ]
+
+        pokeballButtonConstraints = [
+            // outer
+            pokeballButtonOutterView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            pokeballButtonOutterView.centerXAnchor.constraint(equalTo: self.pokeballLineView.trailingAnchor),
+            
+            // middle
+            pokeballButtonMidView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
+            pokeballButtonMidView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
+            
+            // inner
+            pokeballButtonInnerView.centerXAnchor.constraint(equalTo: pokeballButtonOutterView.centerXAnchor),
+            pokeballButtonInnerView.centerYAnchor.constraint(equalTo: pokeballButtonOutterView.centerYAnchor),
+        ]
+
+        let _ = [
+            topPokeballConstraints,
+            bottomPokeballConstraints,
+            pokeballLineConstraints,
+            pokeballButtonConstraints,
+            pokeballButtonSizeConstraints,
+            pikachuImageConstraints
+            ].map{ $0.map { $0.isActive = true } }
+        
+        //pikachuImageView.isHidden = false
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+       
+        let currentCollection = self.traitCollection
+        self.view.removeConstraints(self.view.constraints)
         
+        if (currentCollection.verticalSizeClass == .compact) && (newCollection.verticalSizeClass == .regular) {
+            print("Portait")
+            configurePortraitConstraints()
+        }
+        else {
+            print("Landscape")
+            configureLandscapeConstraints()
+        }
     }
-    
-    
 }
