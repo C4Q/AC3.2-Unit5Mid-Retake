@@ -43,20 +43,105 @@ class DesignOneViewController: UIViewController, CellTitled {
         configureConstraints()
     }
     
+    
+    
     func configureConstraints() {
-        // set constraints
+       
+        containerView.heightAnchor.constraint(equalToConstant: standardMargin).isActive = true
+        containerView.widthAnchor.constraint(equalToConstant: standardMargin).isActive = true
         
+      
+        pichuView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24.0).isActive = true
+        pichuView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8.0).isActive = true
+        pichuView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 30).isActive = true
+        pichuView.trailingAnchor.constraint(equalTo: pikachuView.leadingAnchor, constant: -30).isActive = true
+        
+       
+        
+        
+        
+        raichuView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24.0).isActive = true
+        raichuView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 24.0).isActive = true
+        raichuView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 24.0).isActive = true
+        
+        
+//        textLabel.leadingAnchor.constraint(equalTo: leftBarView.trailingAnchor, constant: 8.0).isActive = true
+//        textLabel.trailingAnchor.constraint(equalTo: rightBarView.leadingAnchor, constant: -8.0).isActive = true
+//        textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+//        textLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        
+      
+    
     }
     
     func setupViewHierarchy() {
-        // Add views
+        view.addSubview(containerView)
+        containerView.addSubview(pikachuView)
+        containerView.addSubview(pichuView)
+        containerView.addSubview(raichuView)
+        containerView.addSubview(pichuTextLabel)
+        containerView.addSubview(pikachuTextLabel)
+        containerView.addSubview(raichuTextLabel)
         
-    }
-    
+        
     
     // MARK: - Define Your Views Here
     
-    // ex:
-    // let pikachuImageView: UIView = ... your code here ...
+        // ex:
+        // let pikachuImageView: UIView = ... your code here ...
+        
+    }
     
+  
+        
+    lazy var pichuView: UIImageView = {
+        let view: UIImageView = UIImageView()
+        view.image = #imageLiteral(resourceName: "pichu")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var pichuTextLabel:  UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "Pichu"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var raichuTextLabel:  UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "Raichu"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var pikachuTextLabel:  UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "Pikachu (no. 25)"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    lazy var raichuView: UIImageView = {
+        let view: UIImageView = UIImageView()
+        view.image = #imageLiteral(resourceName: "raichu")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var pikachuView:  UIImageView = {
+        let view: UIImageView = UIImageView()
+        view.image = #imageLiteral(resourceName: "pikachu")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var containerView: UIView = {
+        let view: UIView = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    
+   
 }

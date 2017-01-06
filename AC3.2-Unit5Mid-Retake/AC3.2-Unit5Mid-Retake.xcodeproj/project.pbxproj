@@ -17,6 +17,10 @@
 		1456CB531E1F4E950074D63C /* DesignTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1456CB521E1F4E950074D63C /* DesignTwoViewController.swift */; };
 		1EAFCDB41E1FB290002220CC /* BooksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAFCDB31E1FB290002220CC /* BooksTableViewController.swift */; };
 		1EAFCDB61E1FB380002220CC /* APIRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAFCDB51E1FB380002220CC /* APIRequestManager.swift */; };
+		52BC0D361E203C9100E0F711 /* book.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52BC0D341E203C9100E0F711 /* book.xcdatamodeld */; };
+		52BC0D381E203DDA00E0F711 /* extension_Books.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BC0D371E203DDA00E0F711 /* extension_Books.swift */; };
+		52BC0D3B1E203ED200E0F711 /* BooksTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BC0D391E203ED200E0F711 /* BooksTableViewCell.swift */; };
+		52BC0D3C1E203ED200E0F711 /* BooksTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BC0D3A1E203ED200E0F711 /* BooksTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		1456CB521E1F4E950074D63C /* DesignTwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; name = DesignTwoViewController.swift; path = Autolayout/DesignTwoViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		1EAFCDB31E1FB290002220CC /* BooksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BooksTableViewController.swift; path = CoreData/BooksTableViewController.swift; sourceTree = "<group>"; };
 		1EAFCDB51E1FB380002220CC /* APIRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequestManager.swift; sourceTree = "<group>"; };
+		52BC0D351E203C9100E0F711 /* book.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = book.xcdatamodel; sourceTree = "<group>"; };
+		52BC0D371E203DDA00E0F711 /* extension_Books.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extension_Books.swift; sourceTree = "<group>"; };
+		52BC0D391E203ED200E0F711 /* BooksTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooksTableViewCell.swift; sourceTree = "<group>"; };
+		52BC0D3A1E203ED200E0F711 /* BooksTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BooksTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +107,10 @@
 			isa = PBXGroup;
 			children = (
 				1EAFCDB31E1FB290002220CC /* BooksTableViewController.swift */,
+				52BC0D341E203C9100E0F711 /* book.xcdatamodeld */,
+				52BC0D371E203DDA00E0F711 /* extension_Books.swift */,
+				52BC0D391E203ED200E0F711 /* BooksTableViewCell.swift */,
+				52BC0D3A1E203ED200E0F711 /* BooksTableViewCell.xib */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -170,6 +182,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52BC0D3C1E203ED200E0F711 /* BooksTableViewCell.xib in Resources */,
 				1456CB411E1EDD770074D63C /* LaunchScreen.storyboard in Resources */,
 				1456CB3E1E1EDD770074D63C /* Assets.xcassets in Resources */,
 			);
@@ -189,7 +202,10 @@
 				1456CB4C1E1EDE470074D63C /* Utilities.swift in Sources */,
 				1456CB501E1F4C550074D63C /* DesignOneViewController.swift in Sources */,
 				1456CB4A1E1EDE0B0074D63C /* IndexTableViewController.swift in Sources */,
+				52BC0D361E203C9100E0F711 /* book.xcdatamodeld in Sources */,
+				52BC0D381E203DDA00E0F711 /* extension_Books.swift in Sources */,
 				1456CB531E1F4E950074D63C /* DesignTwoViewController.swift in Sources */,
+				52BC0D3B1E203ED200E0F711 /* BooksTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +371,16 @@
 			);
 			currentVersion = 1456CB3B1E1EDD770074D63C /* AC3_2_Unit5Mid_Retake.xcdatamodel */;
 			path = AC3_2_Unit5Mid_Retake.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		52BC0D341E203C9100E0F711 /* book.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				52BC0D351E203C9100E0F711 /* book.xcdatamodel */,
+			);
+			currentVersion = 52BC0D351E203C9100E0F711 /* book.xcdatamodel */;
+			path = book.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
