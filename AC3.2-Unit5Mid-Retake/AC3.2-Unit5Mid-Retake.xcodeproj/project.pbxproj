@@ -17,6 +17,9 @@
 		1456CB531E1F4E950074D63C /* DesignTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1456CB521E1F4E950074D63C /* DesignTwoViewController.swift */; };
 		1EAFCDB41E1FB290002220CC /* BooksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAFCDB31E1FB290002220CC /* BooksTableViewController.swift */; };
 		1EAFCDB61E1FB380002220CC /* APIRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAFCDB51E1FB380002220CC /* APIRequestManager.swift */; };
+		CC4B50121E20505A005C9A58 /* Book+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B50111E20505A005C9A58 /* Book+JSON.swift */; };
+		CC4B50151E205079005C9A58 /* BookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B50131E205079005C9A58 /* BookTableViewCell.swift */; };
+		CC4B50161E205079005C9A58 /* BookTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC4B50141E205079005C9A58 /* BookTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		1456CB521E1F4E950074D63C /* DesignTwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; name = DesignTwoViewController.swift; path = Autolayout/DesignTwoViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		1EAFCDB31E1FB290002220CC /* BooksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BooksTableViewController.swift; path = CoreData/BooksTableViewController.swift; sourceTree = "<group>"; };
 		1EAFCDB51E1FB380002220CC /* APIRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequestManager.swift; sourceTree = "<group>"; };
+		CC4B50111E20505A005C9A58 /* Book+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Book+JSON.swift"; sourceTree = "<group>"; };
+		CC4B50131E205079005C9A58 /* BookTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookTableViewCell.swift; sourceTree = "<group>"; };
+		CC4B50141E205079005C9A58 /* BookTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,9 @@
 			isa = PBXGroup;
 			children = (
 				1EAFCDB31E1FB290002220CC /* BooksTableViewController.swift */,
+				CC4B50111E20505A005C9A58 /* Book+JSON.swift */,
+				CC4B50131E205079005C9A58 /* BookTableViewCell.swift */,
+				CC4B50141E205079005C9A58 /* BookTableViewCell.xib */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -172,6 +181,7 @@
 			files = (
 				1456CB411E1EDD770074D63C /* LaunchScreen.storyboard in Resources */,
 				1456CB3E1E1EDD770074D63C /* Assets.xcassets in Resources */,
+				CC4B50161E205079005C9A58 /* BookTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +200,8 @@
 				1456CB501E1F4C550074D63C /* DesignOneViewController.swift in Sources */,
 				1456CB4A1E1EDE0B0074D63C /* IndexTableViewController.swift in Sources */,
 				1456CB531E1F4E950074D63C /* DesignTwoViewController.swift in Sources */,
+				CC4B50151E205079005C9A58 /* BookTableViewCell.swift in Sources */,
+				CC4B50121E20505A005C9A58 /* Book+JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
