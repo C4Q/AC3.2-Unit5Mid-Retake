@@ -101,10 +101,10 @@ class DesignTwoViewController: UIViewController, CellTitled {
         self.view.addSubview(topPokeballView)
         self.view.addSubview(bottomPokeballView)
         self.view.addSubview(pokeballLineView)
+        self.view.addSubview(pikachuImageView)
         self.view.addSubview(pokeballButtonOutterView)
         self.view.addSubview(pokeballButtonMidView)
         self.view.addSubview(pokeballButtonInnerView)
-        self.view.addSubview(pikachuImageView)
         self.edgesForExtendedLayout = []
         
         pokeballButtonOutterView.layer.cornerRadius = pokeballButtonOutterSize.width / 2.0
@@ -278,6 +278,9 @@ class DesignTwoViewController: UIViewController, CellTitled {
         super.willTransition(to: newCollection, with: coordinator)
         
         prepareForRotation([pikachuImageView, topPokeballView, bottomPokeballView, pokeballLineView, pokeballButtonOutterView, pokeballButtonMidView, pokeballButtonInnerView])
+//        for constraint in self.view.constraints {
+//            self.view.removeConstraint(constraint)
+//        }
         
         if newCollection.verticalSizeClass == .compact {
             self.configureLandscapeConstraints()
@@ -296,11 +299,12 @@ class DesignTwoViewController: UIViewController, CellTitled {
             return
         }
         let constraintsOwnedByParentView = parentView.constraints.filter { (constraint) -> Bool in
-            guard let secondItem = constraint.secondItem else { return false }
-            if constraint.firstItem === view || secondItem === view {
-                return true
-            }
-            return false
+//            guard let secondItem = constraint.secondItem else { return false }
+//            if constraint.firstItem === view || secondItem === view {
+//                return true
+//            }
+//            return false
+            return true
         }
         parentView.removeConstraints(constraintsOwnedByParentView)
     }
