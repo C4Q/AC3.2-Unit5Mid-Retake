@@ -122,10 +122,15 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     // this function is based partly on our projects and partly
     // on the Coffee Log app. It will require some customization
     // to this project.
-    func initializeFetchedResultsController() {
+    func initializeFetchedResultsController(search: String? = nil) {
         let request: NSFetchRequest<Book> = Book.fetchRequest()
         let sort = NSSortDescriptor(key: "title", ascending: true)
         request.sortDescriptors = [sort]
+        
+        if let search = search, search != "" {
+            let predicate = NSPredicate(format: "title contains[c] %@", search)
+            request.predicate = predicate
+        }
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
@@ -140,7 +145,7 @@ class BooksTableViewController: UITableViewController, CellTitled, NSFetchedResu
     // MARK: - Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Comment #4
-        self.initializeFetchedResultsController(/* you will need to re-init this with search/filter text*/)
+        self.initializeFetchedResultsController(search: searchText)
         self.tableView.reloadData()
     }
     
