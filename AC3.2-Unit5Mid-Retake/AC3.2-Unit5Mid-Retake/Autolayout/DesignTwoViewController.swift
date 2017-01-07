@@ -267,14 +267,14 @@ class DesignTwoViewController: UIViewController, CellTitled {
             
             //red view
             topPokeballView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.95),
-            topPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.33),
+            topPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.3),
             topPokeballView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8.0),
             topPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
             topPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
             
             //white view
             bottomPokeballView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.95),
-            bottomPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.33),
+            bottomPokeballView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.3),
             bottomPokeballView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8.0),
             bottomPokeballView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 8.0),
             bottomPokeballView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -8.0),
